@@ -1,9 +1,10 @@
-const saveData = require("./src/saveData.js").saveData;
+const performOperation = require("./src/operation.js").performOperation;
 
 const main = function(userArg) {
-	userArg = process.argv.slice(2);
-	saveData(userArg);
-	return;
+	const filePath = "./juiceTransactionDetails.json";
+	const userArgs = process.argv.slice(2);
+	const displayedOutput = performOperation(userArgs, filePath);
+	console.log(displayedOutput);
 };
 
 main();

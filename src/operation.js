@@ -1,27 +1,17 @@
 const lib = require("./lib.js");
-const writeTransaction = lib.writeTransaction;
-const readTransaction = lib.readTransaction;
-const organizeInput = lib.organizeInput;
-const employeeFinder = lib.employeeFinder;
 const convertToString = lib.convertToString;
+const employeeFinder = lib.employeeFinder;
 
-const saveData = function(
-	allTransaction,
-	userArg,
-	time,
-	filePath,
-	encoder,
-	writer
-) {
-	const newTransaction = organizeInput(userArg, time);
+const saveData = function(allTransaction, userArg, time, dataProvided) {
+	const newTransaction = dataProvided.organizeInputRef(userArg, time);
 	allTransaction.push(newTransaction);
-	writeTransaction(filePath, allTransaction, encoder, writer);
+	dataProvided.writeTransactionsRef(allTransaction, dataProvided);
 	return [newTransaction];
 };
 
-const query = function(previousTransaction, userArg) {
-	const employeeTransactions = employeeFinder(userArg[2]);
-	const recordOfEmployee = previousTransaction.filter(employeeTransactions);
+const query = function(allTransaction, userArgs) {
+	const employeeTransactions = employeeFinder(userArgs[2]);
+	const recordOfEmployee = allTransaction.filter(employeeTransactions);
 	return recordOfEmployee;
 };
 
@@ -30,26 +20,15 @@ findOperation = function(operation) {
 	return listOfOperation[operation];
 };
 
-const performOperation = function(
-	userArgs,
-	path,
-	encoder,
-	reader,
-	doesfileExist,
-	writer
-) {
-	const time = new Date();
-	const allTransaction = readTransaction(path, encoder, reader, doesfileExist);
-	const operation = findOperation(userArgs[0]);
+const performOperation = function(userArgs, dataProvided, time) {
+	const allTransaction = dataProvided.readTransactionsRef(dataProvided);
+	const operation = dataProvided.findOperationsRef(userArgs[0]);
 	const resultedOperation = operation(
 		allTransaction,
 		userArgs,
 		time,
-		path,
-		encoder,
-		writer
+		dataProvided
 	);
-	console.log(resultedOperation);
 	const message = convertToString(resultedOperation);
 	return message;
 };

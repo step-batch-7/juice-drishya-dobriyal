@@ -78,45 +78,63 @@ describe("stringedObjetcs", function() {
 
 describe("readTransaction", function() {
 	it("should check path given to isExist is correct,if path doesn't exist return empty object", function() {
-		const doesfileExist = function(path) {
-			assert.strictEqual(path, "correctPath");
+		const doesfileExist = function(filePath) {
+			assert.strictEqual(filePath, "correctPath");
 			return false;
 		};
 		const reader = function() {
 			return "file";
 		};
-		assert.deepStrictEqual(
-			readTransaction("correctPath", "utf8", reader, doesfileExist),
-			[]
-		);
+		const writer = function() {
+			return;
+		};
+		const dataProvided = {
+			filePath: "correctPath",
+			encoder: "utf8",
+			reader: reader,
+			doesfileExist: doesfileExist,
+			writer: writer
+		};
+		assert.deepStrictEqual(readTransaction(dataProvided), []);
 	});
-	it("when path exist,it should return content of file ", function() {
+	it("when path exist,it should return content of file  ", function() {
 		const doesfileExist = function(path) {
 			return true;
 		};
 		const reader = function(path, encoder) {
 			assert.strictEqual(path, "correctPath");
 			assert.strictEqual(encoder, "utf8");
-			return "ckecked the reader";
+			return '{ "checked": "reader" }';
 		};
-		assert.deepStrictEqual(
-			readTransaction("correctPath", "utf8", reader, doesfileExist),
-			"ckecked the reader"
-		);
+		const writer = function() {
+			return;
+		};
+		const dataProvided = {
+			filePath: "correctPath",
+			encoder: "utf8",
+			reader: reader,
+			doesfileExist: doesfileExist,
+			writer: writer
+		};
+		assert.deepStrictEqual(readTransaction(dataProvided), {
+			checked: "reader"
+		});
 	});
 });
 
 describe("writeTransaction", function() {
 	it("should check for the correct path, encoder and should return content of the file", function() {
 		const writer = function(path, content, encoder) {
-			assert.strictEqual(path, "correctPath");
-			assert.strictEqual(content, '{"a":1}');
+			assert.strictEqual(path, "filePath");
+			assert.strictEqual(content, "[]");
 			assert.strictEqual(encoder, "utf8");
 			return '{"a":1}';
 		};
-		assert.strictEqual(
-			writeTransaction("correctPath", { a: 1 }, "utf8", writer),
-			'{"a":1}'
-		);
+		const dataProvided = {
+			filePath: "filePath",
+			encoder: "utf8",
+			writer
+		};
+		assert.strictEqual(writeTransaction([], dataProvided), '{"a":1}');
 	});
 });

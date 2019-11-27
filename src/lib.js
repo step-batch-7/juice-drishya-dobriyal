@@ -1,10 +1,14 @@
 const fs = require("fs");
 
-const readTransaction = function(path, encoder, reader, doesfileExist) {
-	if (!doesfileExist(path)) {
+const readTransaction = function(dataProvided) {
+	const filePath = dataProvided["filePath"];
+	const encodingMethoed = dataProvided["encoder"];
+	const reader = dataProvided["reader"];
+	const doesfileExist = dataProvided["doesfileExist"];
+	if (!doesfileExist(filePath)) {
 		return [];
 	}
-	return objectsTOString(reader(path, encoder));
+	return objectsTOString(reader(filePath, encodingMethoed));
 };
 
 const objectsTOString = function(string) {
@@ -15,14 +19,13 @@ const stringedObjects = function(objects) {
 	return JSON.stringify(objects);
 };
 
-const writeTransaction = function(
-	filePath,
-	updatedTransaction,
-	encoder,
-	writer
-) {
-	const stringedTRansaction = stringedObjects(updatedTransaction);
-	return writer(filePath, stringedTRansaction, encoder);
+const writeTransaction = function(updatedTransaction, dataProvided) {
+	const stringedTransaction = stringedObjects(updatedTransaction);
+	return dataProvided.writer(
+		dataProvided.filePath,
+		stringedTransaction,
+		dataProvided.encoder
+	);
 };
 
 const organizeInput = function(userArg, date) {
@@ -44,7 +47,6 @@ const objectValuesToStrings = function(objects) {
 };
 
 const convertToString = function(arrayOfObjects) {
-	console.log(arrayOfObjects);
 	const dataInString = arrayOfObjects.map(objectValuesToStrings).join("\n");
 	const stringedOutput =
 		"employeeId, beverage, quantity, date \n" + dataInString;

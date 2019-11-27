@@ -3,7 +3,6 @@ const operation = require("../src/operation.js");
 const performOperation = operation.performOperation;
 const saveData = operation.saveData;
 const query = operation.query;
-const findOperation = operation.findOperation;
 
 describe("query", function() {
 	it("should give the record of employeeId given ", function() {
@@ -51,7 +50,6 @@ describe("query", function() {
 
 describe("saveTransaction", function() {
 	it("should save the new data ", function() {
-		const allTransaction = [];
 		const time = new Date();
 		const userArg = [
 			"--save",
@@ -64,45 +62,113 @@ describe("saveTransaction", function() {
 		];
 		const writer = function(path, content, encoder) {
 			assert.strictEqual(path, "filePath");
-			assert.deepStrictEqual(
-				content,
-				'[{"employeeId":"1","beverage":"orange","quantity":"1","date":"' +
-					time.toJSON() +
-					'"}]'
-			);
+			assert.deepStrictEqual(content, "[]");
 			assert.strictEqual(encoder, "utf8");
-			return "";
+			return;
+		};
+		const writeTransaction = function(updatedTransaction, dataProvided) {
+			assert.deepStrictEqual(dataProvided, {
+				encoder: "utf8",
+				filePath: "filePath",
+				writeTransactionsRef: writeTransaction,
+				organizeInputRef: organizeInput
+			});
+			assert.deepStrictEqual(updatedTransaction, [
+				{
+					employeeId: "1",
+					beverage: "orange",
+					quantity: "1",
+					date: time
+				}
+			]);
+			return writer(dataProvided.filePath, "[]", dataProvided.encoder);
+		};
+		const organizeInput = function(userArg, time) {
+			assert.deepStrictEqual(userArg, [
+				"--save",
+				"employeeId",
+				"1",
+				"beverage",
+				"orange",
+				"quantity",
+				"1"
+			]);
+			return { employeeId: "1", beverage: "orange", quantity: "1", date: time };
 		};
 
-		actualValue = saveData(
-			allTransaction,
-			userArg,
-			time,
-			"filePath",
-			"utf8",
-			writer
-		);
-		expectedValue = {
-			employeeId: "1",
-			beverage: "orange",
-			quantity: "1",
-			date: time
+		const dataProvided = {
+			encoder: "utf8",
+			filePath: "filePath",
+			writeTransactionsRef: writeTransaction,
+			organizeInputRef: organizeInput
 		};
+
+		const actualValue = saveData([], userArg, time, dataProvided);
+		const expectedValue = [
+			{
+				employeeId: "1",
+				beverage: "orange",
+				quantity: "1",
+				date: time
+			}
+		];
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 });
 
 describe("performOperation", function() {
-	it("should give the query of given employee", function() {
-		actualValue = performOperation([
-			"--query",
-			"employeeId",
-			path,
-			encoder,
-			reader,
-			doesFileExist
-		]);
-		expectedValue = "";
+	it("should  save the data of given employee", function() {
+		const time = new Date();
+		const saveData = function(allTransaction, userArg, userTime, dataProvided) {
+			assert.deepStrictEqual(allTransaction, []);
+			assert.deepStrictEqual(userArg, [
+				"--save",
+				"employeeID",
+				"11",
+				"beverage",
+				"orange",
+				"quantity",
+				"1"
+			]);
+			assert.deepStrictEqual(userTime, time);
+			assert.deepStrictEqual(dataProvided, {
+				readTransactionsRef: readTransactions,
+				findOperationsRef: findOperation
+			});
+			return [];
+		};
+		const findOperation = function(operationName) {
+			assert.strictEqual(operationName, "--save");
+			return saveData;
+		};
+		const readTransactions = function(dataProvided) {
+			return [];
+		};
+
+		const dataProvided = {
+			readTransactionsRef: readTransactions,
+			findOperationsRef: findOperation
+		};
+		const userArg = [
+			"--save",
+			"employeeID",
+			"11",
+			"beverage",
+			"orange",
+			"quantity",
+			"1"
+		];
+		const actualValue = performOperation(userArg, dataProvided, time);
+		const expectedValue = "employeeId, beverage, quantity, date \n";
 		assert.deepStrictEqual(actualValue, expectedValue);
+	});
+});
+
+describe("FindOperation", function() {
+	it("should return the save operation reference address", function() {
+		assert.strictEqual(findOperation("--save"), saveData);
+	});
+	it("should return the query operation reference address", function() {
+		assert.strictEqual(findOperation("--query"), query);
 	});
 });

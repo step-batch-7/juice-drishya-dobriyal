@@ -3,7 +3,7 @@ const lib = require("../src/lib.js");
 const writeTransaction = lib.writeTransaction;
 const readTransaction = lib.readTransaction;
 const organizeInput = lib.organizeInput;
-const makeFilterEmployee = lib.makeFilterEmployee;
+const employeeFinder = lib.employeeFinder;
 const convertToString = lib.convertToString;
 const stringedObjects = lib.stringedObjects;
 
@@ -24,7 +24,7 @@ describe("convertToString", function() {
 				date: "2019-11-24T03:27:09.382Z"
 			}
 		];
-		expectedValue =
+		const expectedValue =
 			"employeeId, beverage, quantity, date \n" +
 			"11,orange,1,2019-11-24T03:27:09.382Z";
 		assert.strictEqual(convertToString(arrayOfObjects), expectedValue);
@@ -33,7 +33,7 @@ describe("convertToString", function() {
 
 describe("filterEmployee", function() {
 	it("it return true if the record send has employeeID as given", function() {
-		actualValue = makeFilterEmployee("11")({
+		const actualValue = employeeFinder("11")({
 			employeeId: "11",
 			beverage: "orange",
 			quantity: "1",
@@ -42,7 +42,7 @@ describe("filterEmployee", function() {
 		assert.strictEqual(actualValue, true);
 	});
 	it("should return false if record send doesn't have the employeeId", function() {
-		actualValue = makeFilterEmployee("2")({
+		const actualValue = employeeFinder("2")({
 			employeeId: "11",
 			beverage: "orange",
 			quantity: "1",
@@ -54,11 +54,11 @@ describe("filterEmployee", function() {
 
 describe("organizeInput", function() {
 	it("should return data in form of objects", function() {
-		actualValue = organizeInput(
+		const actualValue = organizeInput(
 			["--save", "employeeId", "1", "beverage", "orange", "quantity", "1"],
 			"25-11-2019"
 		);
-		expectedValue = {
+		const expectedValue = {
 			employeeId: "1",
 			beverage: "orange",
 			quantity: "1",
@@ -70,8 +70,8 @@ describe("organizeInput", function() {
 
 describe("stringedObjetcs", function() {
 	it("should give an strings when an object is given", function() {
-		object = { a: 1 };
-		actualValue = stringedObjects(object);
+		const object = { a: 1 };
+		const actualValue = stringedObjects(object);
 		assert.strictEqual(actualValue, '{"a":1}');
 	});
 });
@@ -87,7 +87,7 @@ describe("readTransaction", function() {
 		};
 		assert.deepStrictEqual(
 			readTransaction("correctPath", "utf8", reader, doesfileExist),
-			{}
+			[]
 		);
 	});
 	it("when path exist,it should return content of file ", function() {

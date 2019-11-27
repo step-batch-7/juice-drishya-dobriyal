@@ -2,9 +2,13 @@ const fs = require("fs");
 
 const readTransaction = function(path, encoder, reader, doesfileExist) {
 	if (!doesfileExist(path)) {
-		return {};
+		return [];
 	}
-	return reader(path, encoder);
+	return objectsTOString(reader(path, encoder));
+};
+
+const objectsTOString = function(string) {
+	return JSON.parse(string);
 };
 
 const stringedObjects = function(objects) {
@@ -29,7 +33,7 @@ const organizeInput = function(userArg, date) {
 	return organizedInput;
 };
 
-const makeFilterEmployee = function(employeeId) {
+const employeeFinder = function(employeeId) {
 	return function(record) {
 		return record["employeeId"] === employeeId;
 	};
@@ -40,6 +44,7 @@ const objectValuesToStrings = function(objects) {
 };
 
 const convertToString = function(arrayOfObjects) {
+	console.log(arrayOfObjects);
 	const dataInString = arrayOfObjects.map(objectValuesToStrings).join("\n");
 	const stringedOutput =
 		"employeeId, beverage, quantity, date \n" + dataInString;
@@ -49,6 +54,6 @@ const convertToString = function(arrayOfObjects) {
 exports.writeTransaction = writeTransaction;
 exports.readTransaction = readTransaction;
 exports.organizeInput = organizeInput;
-exports.makeFilterEmployee = makeFilterEmployee;
+exports.employeeFinder = employeeFinder;
 exports.convertToString = convertToString;
 exports.stringedObjects = stringedObjects;

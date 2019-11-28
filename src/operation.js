@@ -1,21 +1,42 @@
 const lib = require("./lib.js");
-const convertToString = lib.convertToString;
 const employeeFinder = lib.employeeFinder;
+const objectValuesToStrings = lib.objectValuesToStrings;
 
 const saveData = function(allTransaction, userArg, time, dataProvided) {
 	const newTransaction = dataProvided.organizeInputRef(userArg, time);
 	allTransaction.push(newTransaction);
 	dataProvided.writeTransactionsRef(allTransaction, dataProvided);
-	return [newTransaction];
+	const stringedOutput =
+		"employeeId, beverage, quantity, date \n" +
+		objectValuesToStrings(newTransaction);
+	return stringedOutput;
+};
+
+const sum = function(totalsum, record) {
+	return +record.quantity + totalsum;
+};
+
+const queryString = function(string, objects) {
+	const value = Object.values(objects).join(",");
+	string = string + "\n" + value;
+	return string;
 };
 
 const query = function(allTransaction, userArgs) {
 	const employeeTransactions = employeeFinder(userArgs[2]);
 	const recordOfEmployee = allTransaction.filter(employeeTransactions);
-	return recordOfEmployee;
+	const totalJuices = recordOfEmployee.reduce(sum, 0);
+	const header = "employeeId, beverage, quantity, date ";
+	const stringedOutput =
+		header +
+		recordOfEmployee.reduce(queryString, "") +
+		"\n" +
+		"totalJuices :" +
+		totalJuices;
+	return stringedOutput;
 };
 
-findOperation = function(operation) {
+const findOperation = function(operation) {
 	const listOfOperation = { "--save": saveData, "--query": query };
 	return listOfOperation[operation];
 };
@@ -29,8 +50,8 @@ const performOperation = function(userArgs, dataProvided, time) {
 		time,
 		dataProvided
 	);
-	const message = convertToString(resultedOperation);
-	return message;
+	//const message = convertToString(resultedOperation);
+	return resultedOperation;
 };
 
 exports.performOperation = performOperation;

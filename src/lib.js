@@ -29,33 +29,29 @@ const writeTransaction = function(updatedTransaction, dataProvided) {
 };
 
 const organizeInput = function(userArg, date) {
-	const employeeId = userArg[2];
-	const beverage = userArg[4];
+	const employeeId = userArg[4];
+	const beverage = userArg[2];
 	const quantity = userArg[6];
 	const organizedInput = { employeeId, beverage, quantity, date };
 	return organizedInput;
 };
 
-const employeeFinder = function(employeeId) {
+const employeeFinder = function(key) {
 	return function(record) {
-		return record["employeeId"] === employeeId;
+		return record["employeeId"] === key;
 	};
 };
 
 const objectValuesToStrings = function(objects) {
-	return Object.values(objects).join(",");
-};
-
-const convertToString = function(arrayOfObjects) {
-	const dataInString = arrayOfObjects.map(objectValuesToStrings).join("\n");
-	const stringedOutput =
-		"employeeId, beverage, quantity, date \n" + dataInString;
-	return stringedOutput;
+	const array = Object.values(objects);
+	array[3] = array[3].toJSON();
+	const string = array.join(",");
+	return string;
 };
 
 exports.writeTransaction = writeTransaction;
 exports.readTransaction = readTransaction;
 exports.organizeInput = organizeInput;
 exports.employeeFinder = employeeFinder;
-exports.convertToString = convertToString;
 exports.stringedObjects = stringedObjects;
+exports.objectValuesToStrings = objectValuesToStrings;

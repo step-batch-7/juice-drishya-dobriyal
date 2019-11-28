@@ -22,14 +22,8 @@ describe("query", function() {
 		];
 		userArgs = ["--query", "employeeId", "11"];
 		actualValue = query(allTransaction, userArgs);
-		expectedValue = [
-			{
-				employeeId: "11",
-				beverage: "orange",
-				quantity: "1",
-				date: "2019-11-24T03:27:09.382Z"
-			}
-		];
+		expectedValue =
+			"employeeId, beverage, quantity, date \n11,orange,1,2019-11-24T03:27:09.382Z\ntotalJuices :1";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 	it("should give the empty record if  employeeId given is not present", function() {
@@ -43,7 +37,7 @@ describe("query", function() {
 		];
 		userArgs = ["emploeeId", "--query", "11"];
 		actualValue = query(allTransaction, userArgs);
-		expectedValue = [];
+		expectedValue = "employeeId, beverage, quantity, date \ntotalJuices :0";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 });
@@ -104,14 +98,7 @@ describe("saveTransaction", function() {
 		};
 
 		const actualValue = saveData([], userArg, time, dataProvided);
-		const expectedValue = [
-			{
-				employeeId: "1",
-				beverage: "orange",
-				quantity: "1",
-				date: time
-			}
-		];
+		const expectedValue = `employeeId, beverage, quantity, date \n1,orange,1,${time.toJSON()}`;
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 });
@@ -135,7 +122,7 @@ describe("performOperation", function() {
 				readTransactionsRef: readTransactions,
 				findOperationsRef: findOperation
 			});
-			return [];
+			return "";
 		};
 		const findOperation = function(operationName) {
 			assert.strictEqual(operationName, "--save");
@@ -159,7 +146,7 @@ describe("performOperation", function() {
 			"1"
 		];
 		const actualValue = performOperation(userArg, dataProvided, time);
-		const expectedValue = "employeeId, beverage, quantity, date \n";
+		const expectedValue = "";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 });

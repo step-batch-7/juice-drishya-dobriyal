@@ -4,37 +4,12 @@ const writeTransaction = lib.writeTransaction;
 const readTransaction = lib.readTransaction;
 const organizeInput = lib.organizeInput;
 const employeeFinder = lib.employeeFinder;
-const convertToString = lib.convertToString;
 const stringedObjects = lib.stringedObjects;
-
-describe("convertToString", function() {
-	it("it will give only titles if an empty array is send to it ", function() {
-		assert.strictEqual(
-			convertToString([]),
-			"employeeId, beverage, quantity, date \n"
-		);
-	});
-
-	it("it will convert array of objects to string with title", function() {
-		const arrayOfObjects = [
-			{
-				employeeId: "11",
-				beverage: "orange",
-				quantity: "1",
-				date: "2019-11-24T03:27:09.382Z"
-			}
-		];
-		const expectedValue =
-			"employeeId, beverage, quantity, date \n" +
-			"11,orange,1,2019-11-24T03:27:09.382Z";
-		assert.strictEqual(convertToString(arrayOfObjects), expectedValue);
-	});
-});
 
 describe("filterEmployee", function() {
 	it("it return true if the record send has employeeID as given", function() {
-		const actualValue = employeeFinder("11")({
-			employeeId: "11",
+		const actualValue = employeeFinder("111")({
+			employeeId: "111",
 			beverage: "orange",
 			quantity: "1",
 			date: "2019-11-24T03:27:09.382Z"
@@ -55,7 +30,7 @@ describe("filterEmployee", function() {
 describe("organizeInput", function() {
 	it("should return data in form of objects", function() {
 		const actualValue = organizeInput(
-			["--save", "employeeId", "1", "beverage", "orange", "quantity", "1"],
+			["--save", "beverage", "orange", "employeeId", "1", "quantity", "1"],
 			"25-11-2019"
 		);
 		const expectedValue = {

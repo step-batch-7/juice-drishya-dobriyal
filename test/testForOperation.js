@@ -3,6 +3,7 @@ const operation = require("../src/operation.js");
 const performOperation = operation.performOperation;
 const saveData = operation.saveData;
 const query = operation.query;
+const findOperation = operation.findOperation;
 
 describe("query", function() {
 	it("should give the record of employeeId given ", function() {
@@ -20,7 +21,7 @@ describe("query", function() {
 				date: "2019-11-24T03:27:09.382Z"
 			}
 		];
-		userArgs = ["--query", "employeeId", "11"];
+		userArgs = ["--query", "--employeeId", "11"];
 		actualValue = query(allTransaction, userArgs);
 		expectedValue =
 			"employeeId, beverage, quantity, date \n11,orange,1,2019-11-24T03:27:09.382Z\ntotalJuices :1";
@@ -38,6 +39,48 @@ describe("query", function() {
 		userArgs = ["emploeeId", "--query", "11"];
 		actualValue = query(allTransaction, userArgs);
 		expectedValue = "employeeId, beverage, quantity, date \ntotalJuices :0";
+		assert.deepStrictEqual(actualValue, expectedValue);
+	});
+	it("should give the record of beverage given ", function() {
+		allTransaction = [
+			{
+				employeeId: "11",
+				beverage: "orange",
+				quantity: "1",
+				date: "2019-11-24T03:27:09.382Z"
+			},
+			{
+				employeeId: "1",
+				beverage: "watermelon",
+				quantity: "1",
+				date: "2019-11-24T03:27:09.382Z"
+			}
+		];
+		userArgs = ["--query", "--beverage", "orange"];
+		actualValue = query(allTransaction, userArgs);
+		expectedValue =
+			"employeeId, beverage, quantity, date \n11,orange,1,2019-11-24T03:27:09.382Z\ntotalJuices :1";
+		assert.deepStrictEqual(actualValue, expectedValue);
+	});
+	it("should give the record of beverage and employeId specified given ", function() {
+		allTransaction = [
+			{
+				employeeId: "1",
+				beverage: "orange",
+				quantity: "1",
+				date: "2019-11-24T03:27:09.382Z"
+			},
+			{
+				employeeId: "11",
+				beverage: "watermelon",
+				quantity: "1",
+				date: "2019-11-24T03:27:09.382Z"
+			}
+		];
+		userArgs = ["--query", "--beverage", "orange", "--employeeId", "1"];
+		actualValue = query(allTransaction, userArgs);
+		expectedValue =
+			"employeeId, beverage, quantity, date \n1,orange,1,2019-11-24T03:27:09.382Z\ntotalJuices :1";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 });

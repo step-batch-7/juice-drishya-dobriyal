@@ -4,11 +4,13 @@ const writeTransaction = lib.writeTransaction;
 const readTransaction = lib.readTransaction;
 const organizeInput = lib.organizeInput;
 const employeeFinder = lib.employeeFinder;
-const stringedObjects = lib.stringedObjects;
 
 describe("filterEmployee", function() {
 	it("it return true if the record send has employeeID as given", function() {
-		const actualValue = employeeFinder("111")({
+		const actualValue = employeeFinder(
+			"--employeeId",
+			"111"
+		)({
 			employeeId: "111",
 			beverage: "orange",
 			quantity: "1",
@@ -17,7 +19,10 @@ describe("filterEmployee", function() {
 		assert.strictEqual(actualValue, true);
 	});
 	it("should return false if record send doesn't have the employeeId", function() {
-		const actualValue = employeeFinder("2")({
+		const actualValue = employeeFinder(
+			"--employeeId",
+			"2"
+		)({
 			employeeId: "11",
 			beverage: "orange",
 			quantity: "1",
@@ -43,13 +48,13 @@ describe("organizeInput", function() {
 	});
 });
 
-describe("stringedObjetcs", function() {
-	it("should give an strings when an object is given", function() {
-		const object = { a: 1 };
-		const actualValue = stringedObjects(object);
-		assert.strictEqual(actualValue, '{"a":1}');
-	});
-});
+// describe("stringedObjetcs", function() {
+// 	it("should give an strings when an object is given", function() {
+// 		const object = { a: 1 };
+// 		const actualValue = stringedObjects(object);
+// 		assert.strictEqual(actualValue, '{"a":1}');
+// 	});
+// });
 
 describe("readTransaction", function() {
 	it("should check path given to isExist is correct,if path doesn't exist return empty object", function() {

@@ -6,9 +6,9 @@ const saveData = function(allTransaction, userArg, time, dataProvided) {
 	const newTransaction = dataProvided.organizeInputRef(userArg, time);
 	allTransaction.push(newTransaction);
 	dataProvided.writeTransactionsRef(allTransaction, dataProvided);
-	const stringedOutput =
-		"employeeId, beverage, quantity, date \n" +
-		objectValuesToStrings(newTransaction);
+	const stringedOutput = `employeeId, beverage, quantity, date \n${objectValuesToStrings(
+		newTransaction
+	)}`;
 	return stringedOutput;
 };
 
@@ -17,22 +17,23 @@ const sum = function(totalsum, record) {
 };
 
 const queryString = function(string, objects) {
-	const value = Object.values(objects).join(",");
+	value = `${objects.employeeId},${objects.beverage},${objects.quantity},${objects.date}`;
 	string = string + "\n" + value;
 	return string;
 };
 
 const query = function(allTransaction, userArgs) {
-	const employeeTransactions = employeeFinder(userArgs[2]);
-	const recordOfEmployee = allTransaction.filter(employeeTransactions);
+	let recordOfEmployee = allTransaction;
+	for (let i = 1; i < userArgs.length; i += 2) {
+		const employeeTransactions = employeeFinder(userArgs[i], userArgs[i + 1]);
+		recordOfEmployee = recordOfEmployee.filter(employeeTransactions);
+	}
 	const totalJuices = recordOfEmployee.reduce(sum, 0);
 	const header = "employeeId, beverage, quantity, date ";
-	const stringedOutput =
-		header +
-		recordOfEmployee.reduce(queryString, "") +
-		"\n" +
-		"totalJuices :" +
-		totalJuices;
+	const stringedOutput = `${header}${recordOfEmployee.reduce(
+		queryString,
+		""
+	)}\ntotalJuices :${totalJuices}`;
 	return stringedOutput;
 };
 
@@ -50,7 +51,6 @@ const performOperation = function(userArgs, dataProvided, time) {
 		time,
 		dataProvided
 	);
-	//const message = convertToString(resultedOperation);
 	return resultedOperation;
 };
 

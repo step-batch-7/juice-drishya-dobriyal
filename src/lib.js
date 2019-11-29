@@ -1,26 +1,16 @@
-const fs = require("fs");
-
 const readTransaction = function(dataProvided) {
-	const filePath = dataProvided["filePath"];
-	const encodingMethoed = dataProvided["encoder"];
-	const reader = dataProvided["reader"];
-	const doesfileExist = dataProvided["doesfileExist"];
+	const filePath = dataProvided.filePath;
+	const encodingMethoed = dataProvided.encoder;
+	const reader = dataProvided.reader;
+	const doesfileExist = dataProvided.doesfileExist;
 	if (!doesfileExist(filePath)) {
 		return [];
 	}
-	return objectsTOString(reader(filePath, encodingMethoed));
-};
-
-const objectsTOString = function(string) {
-	return JSON.parse(string);
-};
-
-const stringedObjects = function(objects) {
-	return JSON.stringify(objects);
+	return JSON.parse(reader(filePath, encodingMethoed));
 };
 
 const writeTransaction = function(updatedTransaction, dataProvided) {
-	const stringedTransaction = stringedObjects(updatedTransaction);
+	const stringedTransaction = JSON.stringify(updatedTransaction);
 	return dataProvided.writer(
 		dataProvided.filePath,
 		stringedTransaction,
@@ -36,16 +26,16 @@ const organizeInput = function(userArg, date) {
 	return organizedInput;
 };
 
-const employeeFinder = function(key) {
+const employeeFinder = function(searchKey, searchFor) {
 	return function(record) {
-		return record["employeeId"] === key;
+		return record[searchKey.slice(2)] === searchFor;
 	};
 };
 
 const objectValuesToStrings = function(objects) {
-	const array = Object.values(objects);
-	array[3] = array[3].toJSON();
-	const string = array.join(",");
+	string = `${objects.employeeId},${objects.beverage},${
+		objects.quantity
+	},${objects.date.toJSON()}`;
 	return string;
 };
 
@@ -53,5 +43,4 @@ exports.writeTransaction = writeTransaction;
 exports.readTransaction = readTransaction;
 exports.organizeInput = organizeInput;
 exports.employeeFinder = employeeFinder;
-exports.stringedObjects = stringedObjects;
 exports.objectValuesToStrings = objectValuesToStrings;

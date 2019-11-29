@@ -48,14 +48,6 @@ describe("organizeInput", function() {
 	});
 });
 
-// describe("stringedObjetcs", function() {
-// 	it("should give an strings when an object is given", function() {
-// 		const object = { a: 1 };
-// 		const actualValue = stringedObjects(object);
-// 		assert.strictEqual(actualValue, '{"a":1}');
-// 	});
-// });
-
 describe("readTransaction", function() {
 	it("should check path given to isExist is correct,if path doesn't exist return empty object", function() {
 		const doesfileExist = function(filePath) {

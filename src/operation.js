@@ -6,7 +6,7 @@ const saveData = function(allTransaction, userArg, time, dataProvided) {
 	const newTransaction = dataProvided.organizeInputRef(userArg, time);
 	allTransaction.push(newTransaction);
 	dataProvided.writeTransactionsRef(allTransaction, dataProvided);
-	const stringedOutput = `employeeId, beverage, quantity, date \n${objectValuesToStrings(
+	const stringedOutput = `Employee ID, Beverage, Quantity, Date \n${objectValuesToStrings(
 		newTransaction
 	)}`;
 	return stringedOutput;
@@ -29,11 +29,11 @@ const query = function(allTransaction, userArgs) {
 		recordOfEmployee = recordOfEmployee.filter(employeeTransactions);
 	}
 	const totalJuices = recordOfEmployee.reduce(sum, 0);
-	const header = "employeeId, beverage, quantity, date ";
+	const header = "Employee ID, Beverage, Quantity, Date ";
 	const stringedOutput = `${header}${recordOfEmployee.reduce(
 		queryString,
 		""
-	)}\ntotalJuices :${totalJuices}`;
+	)}\ntotal: ${totalJuices} Juices`;
 	return stringedOutput;
 };
 

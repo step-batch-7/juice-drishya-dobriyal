@@ -24,7 +24,7 @@ describe("query", function() {
 		userArgs = ["--query", "--employeeId", "11"];
 		actualValue = query(allTransaction, userArgs);
 		expectedValue =
-			"employeeId, beverage, quantity, date \n11,orange,1,2019-11-24T03:27:09.382Z\ntotalJuices :1";
+			"Employee ID, Beverage, Quantity, Date \n11,orange,1,2019-11-24T03:27:09.382Z\ntotal: 1 Juices";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 	it("should give the empty record if  employeeId given is not present", function() {
@@ -38,7 +38,7 @@ describe("query", function() {
 		];
 		userArgs = ["emploeeId", "--query", "11"];
 		actualValue = query(allTransaction, userArgs);
-		expectedValue = "employeeId, beverage, quantity, date \ntotalJuices :0";
+		expectedValue = "Employee ID, Beverage, Quantity, Date \ntotal: 0 Juices";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 	it("should give the record of beverage given ", function() {
@@ -59,7 +59,7 @@ describe("query", function() {
 		userArgs = ["--query", "--beverage", "orange"];
 		actualValue = query(allTransaction, userArgs);
 		expectedValue =
-			"employeeId, beverage, quantity, date \n11,orange,1,2019-11-24T03:27:09.382Z\ntotalJuices :1";
+			"Employee ID, Beverage, Quantity, Date \n11,orange,1,2019-11-24T03:27:09.382Z\ntotal: 1 Juices";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 	it("should give the record of beverage and employeId specified given ", function() {
@@ -80,7 +80,7 @@ describe("query", function() {
 		userArgs = ["--query", "--beverage", "orange", "--employeeId", "1"];
 		actualValue = query(allTransaction, userArgs);
 		expectedValue =
-			"employeeId, beverage, quantity, date \n1,orange,1,2019-11-24T03:27:09.382Z\ntotalJuices :1";
+			"Employee ID, Beverage, Quantity, Date \n1,orange,1,2019-11-24T03:27:09.382Z\ntotal: 1 Juices";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 });
@@ -141,7 +141,7 @@ describe("saveTransaction", function() {
 		};
 
 		const actualValue = saveData([], userArg, time, dataProvided);
-		const expectedValue = `employeeId, beverage, quantity, date \n1,orange,1,${time.toJSON()}`;
+		const expectedValue = `Employee ID, Beverage, Quantity, Date \n1,orange,1,${time.toJSON()}`;
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
 });

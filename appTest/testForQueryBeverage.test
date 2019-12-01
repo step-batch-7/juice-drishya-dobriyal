@@ -1,0 +1,4 @@
+(export dummyPath="./appTest/fileForQuery.json"; node beverage.js --query --beverage Orange)
+Employee ID, Beverage, Quantity, Date 
+4,Orange,2,2019-11-30T11:01:07.606Z
+Total: 2 Juices

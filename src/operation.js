@@ -2,8 +2,11 @@ const lib = require("./lib.js");
 const employeeFinder = lib.employeeFinder;
 const objectValuesToStrings = lib.objectValuesToStrings;
 
-const saveData = function(allTransaction, userArg, time, dataProvided) {
-	const newTransaction = dataProvided.organizeInputRef(userArg, time);
+const saveData = function(allTransaction, userArg, dataProvided) {
+	const newTransaction = dataProvided.organizeInputRef(
+		userArg,
+		dataProvided.time
+	);
 	allTransaction.push(newTransaction);
 	dataProvided.writeTransactionsRef(allTransaction, dataProvided);
 	const stringedOutput = `Employee ID, Beverage, Quantity, Date \n${objectValuesToStrings(
@@ -12,12 +15,12 @@ const saveData = function(allTransaction, userArg, time, dataProvided) {
 	return stringedOutput;
 };
 
-const sum = function(totalsum, record) {
-	return +record.quantity + totalsum;
+const sum = function(Totalsum, record) {
+	return +record.quantity + Totalsum;
 };
 
 const queryString = function(string, objects) {
-	value = `${objects.employeeId},${objects.beverage},${objects.quantity},${objects.date}`;
+	value = `${objects.empId},${objects.beverage},${objects.quantity},${objects.date}`;
 	string = string + "\n" + value;
 	return string;
 };
@@ -28,12 +31,12 @@ const query = function(allTransaction, userArgs) {
 		const employeeTransactions = employeeFinder(userArgs[i], userArgs[i + 1]);
 		recordOfEmployee = recordOfEmployee.filter(employeeTransactions);
 	}
-	const totalJuices = recordOfEmployee.reduce(sum, 0);
+	const TotalJuices = recordOfEmployee.reduce(sum, 0);
 	const header = "Employee ID, Beverage, Quantity, Date ";
 	const stringedOutput = `${header}${recordOfEmployee.reduce(
 		queryString,
 		""
-	)}\ntotal: ${totalJuices} Juices`;
+	)}\nTotal: ${TotalJuices} Juices`;
 	return stringedOutput;
 };
 
@@ -42,15 +45,10 @@ const findOperation = function(operation) {
 	return listOfOperation[operation];
 };
 
-const performOperation = function(userArgs, dataProvided, time) {
+const performOperation = function(userArgs, dataProvided) {
 	const allTransaction = dataProvided.readTransactionsRef(dataProvided);
 	const operation = dataProvided.findOperationsRef(userArgs[0]);
-	const resultedOperation = operation(
-		allTransaction,
-		userArgs,
-		time,
-		dataProvided
-	);
+	const resultedOperation = operation(allTransaction, userArgs, dataProvided);
 	return resultedOperation;
 };
 

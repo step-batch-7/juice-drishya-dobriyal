@@ -4,8 +4,7 @@ const dataProvided = require("./src/dataAndFunctionRefProvider.js")
 
 const main = function(userArg) {
 	const userArgs = process.argv.slice(2);
-	time = new Date();
-	const displayedOutput = performOperation(userArgs, dataProvided(), time);
+	const displayedOutput = performOperation(userArgs, dataProvided());
 	console.log(displayedOutput);
 };
 

@@ -4,9 +4,22 @@ const findOperation = require("./operation.js").findOperation;
 const employeeFinder = require("./lib.js").employeeFinder;
 const organizeInput = require("./lib.js").organizeInput;
 
+const pathFinder = function(env) {
+	if (env.dummyPath === undefined) {
+		return "./juiceTransactionDetails.json";
+	}
+	return env.dummyPath;
+};
+
+const timeFinder = function(env) {
+	dummyDate = env.dummyTime || new Date();
+	return new Date(dummyDate);
+};
+
 const dataProvided = function() {
 	const fs = require("fs");
-	const filePath = "./juiceTransactionDetails.json";
+	const time = timeFinder(process.env);
+	const filePath = pathFinder(process.env);
 	const encoder = "utf8";
 	const reader = fs.readFileSync;
 	const doesfileExist = fs.existsSync;
@@ -18,6 +31,7 @@ const dataProvided = function() {
 	const organizeInputRef = organizeInput;
 	return {
 		filePath,
+		time,
 		encoder,
 		reader,
 		doesfileExist,

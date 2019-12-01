@@ -19,21 +19,25 @@ const writeTransaction = function(updatedTransaction, dataProvided) {
 };
 
 const organizeInput = function(userArg, date) {
-	const employeeId = userArg[4];
+	const empId = userArg[4];
 	const beverage = userArg[2];
 	const quantity = userArg[6];
-	const organizedInput = { employeeId, beverage, quantity, date };
+	const organizedInput = { empId, beverage, quantity, date };
 	return organizedInput;
 };
 
 const employeeFinder = function(searchKey, searchFor) {
 	return function(record) {
-		return record[searchKey.slice(2)] === searchFor;
+		search = record[searchKey.slice(2)];
+		if (searchKey.slice(2) == "date") {
+			search = record[searchKey.slice(2)].slice(0, 10);
+		}
+		return search === searchFor;
 	};
 };
 
 const objectValuesToStrings = function(objects) {
-	string = `${objects.employeeId},${objects.beverage},${
+	string = `${objects.empId},${objects.beverage},${
 		objects.quantity
 	},${objects.date.toJSON()}`;
 	return string;

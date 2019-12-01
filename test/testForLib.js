@@ -6,24 +6,24 @@ const organizeInput = lib.organizeInput;
 const employeeFinder = lib.employeeFinder;
 
 describe("filterEmployee", function() {
-	it("it return true if the record send has employeeID as given", function() {
+	it("it return true if the record send has empId as given", function() {
 		const actualValue = employeeFinder(
-			"--employeeId",
+			"--empId",
 			"111"
 		)({
-			employeeId: "111",
+			empId: "111",
 			beverage: "orange",
 			quantity: "1",
 			date: "2019-11-24T03:27:09.382Z"
 		});
 		assert.strictEqual(actualValue, true);
 	});
-	it("should return false if record send doesn't have the employeeId", function() {
+	it("should return false if record send doesn't have the empId", function() {
 		const actualValue = employeeFinder(
-			"--employeeId",
+			"--empId",
 			"2"
 		)({
-			employeeId: "11",
+			empId: "11",
 			beverage: "orange",
 			quantity: "1",
 			date: "2019-11-24T03:27:09.382Z"
@@ -35,11 +35,11 @@ describe("filterEmployee", function() {
 describe("organizeInput", function() {
 	it("should return data in form of objects", function() {
 		const actualValue = organizeInput(
-			["--save", "beverage", "orange", "employeeId", "1", "quantity", "1"],
+			["--save", "beverage", "orange", "empId", "1", "quantity", "1"],
 			"25-11-2019"
 		);
 		const expectedValue = {
-			employeeId: "1",
+			empId: "1",
 			beverage: "orange",
 			quantity: "1",
 			date: "25-11-2019"

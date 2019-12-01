@@ -1,0 +1,32 @@
+[
+	{
+		"empId": "1",
+		"beverage": "Lemon",
+		"quantity": "1",
+		"date": "2019-11-30T11:00:47.102Z"
+	},
+	{
+		"empId": "2",
+		"beverage": "Watermelon",
+		"quantity": "2",
+		"date": "2019-11-31T11:01:03.832Z"
+	},
+	{
+		"empId": "3",
+		"beverage": "Lemon",
+		"quantity": "2",
+		"date": "2019-11-30T11:01:05.334Z"
+	},
+	{
+		"empId": "2",
+		"beverage": "Watermelon",
+		"quantity": "2",
+		"date": "2019-11-31T11:01:06.886Z"
+	},
+	{
+		"empId": "4",
+		"beverage": "Orange",
+		"quantity": "2",
+		"date": "2019-11-30T11:01:07.606Z"
+	}
+]

@@ -39,6 +39,9 @@ const query = function(allTransaction, userArgs) {
 
 const findOperation = function(operation) {
 	const listOfOperation = { "--save": saveData, "--query": query };
+	if (!listOfOperation.hasOwnProperty(operation)) {
+		listOfOperation[operation] = () => "wrong Input";
+	}
 	return listOfOperation[operation];
 };
 

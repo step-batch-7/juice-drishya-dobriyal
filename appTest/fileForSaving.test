@@ -1,0 +1,3 @@
+(export dummyTime="2019-02-30T11:00:47.102Z";export dummyPath="./appTest/fileForSave.json";node beverage.js --save --beverage Orange --empId 11111 --qty 1)
+Employee ID, Beverage, Quantity, Date 
+11111,Orange,1,2019-03-02T11:00:47.102Z

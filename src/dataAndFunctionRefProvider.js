@@ -16,7 +16,7 @@ const timeFinder = function(env) {
 	return new Date(dummyDate);
 };
 
-const dataProvided = function() {
+const config = function() {
 	const fs = require("fs");
 	const time = timeFinder(process.env);
 	const filePath = pathFinder(process.env);
@@ -43,4 +43,4 @@ const dataProvided = function() {
 		organizeInputRef
 	};
 };
-exports.dataProvided = dataProvided;
+exports.config = config;

@@ -1,21 +1,17 @@
-const readTransaction = function(dataProvided) {
-	const filePath = dataProvided.filePath;
-	const encodingMethoed = dataProvided.encoder;
-	const reader = dataProvided.reader;
-	const doesfileExist = dataProvided.doesfileExist;
+const readTransaction = function(config) {
+	const filePath = config.filePath;
+	const encodingMethoed = config.encoder;
+	const reader = config.reader;
+	const doesfileExist = config.doesfileExist;
 	if (!doesfileExist(filePath)) {
 		return [];
 	}
 	return JSON.parse(reader(filePath, encodingMethoed));
 };
 
-const writeTransaction = function(updatedTransaction, dataProvided) {
+const writeTransaction = function(updatedTransaction, config) {
 	const stringedTransaction = JSON.stringify(updatedTransaction);
-	return dataProvided.writer(
-		dataProvided.filePath,
-		stringedTransaction,
-		dataProvided.encoder
-	);
+	return config.writer(config.filePath, stringedTransaction, config.encoder);
 };
 
 const organizeInput = function(userArg, date) {

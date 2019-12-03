@@ -229,9 +229,9 @@ describe("saveTransaction", function() {
 			assert.strictEqual(encoder, "utf8");
 			return;
 		};
-		const writeTransaction = function(updatedTransaction, dataProvided) {
-			assert.deepStrictEqual(dataProvided, {
-				time: dataProvided.time,
+		const writeTransaction = function(updatedTransaction, config) {
+			assert.deepStrictEqual(config, {
+				time: config.time,
 				encoder: "utf8",
 				filePath: "filePath",
 				writeTransactionsRef: writeTransaction,
@@ -245,7 +245,7 @@ describe("saveTransaction", function() {
 					date: time
 				}
 			]);
-			return writer(dataProvided.filePath, "[]", dataProvided.encoder);
+			return writer(config.filePath, "[]", config.encoder);
 		};
 		const organizeInput = function(userArg, time) {
 			assert.deepStrictEqual(userArg, [
@@ -260,7 +260,7 @@ describe("saveTransaction", function() {
 			return { empId: "1", beverage: "orange", quantity: "1", date: time };
 		};
 
-		const dataProvided = {
+		const config = {
 			time: new Date(),
 			encoder: "utf8",
 			filePath: "filePath",
@@ -268,7 +268,7 @@ describe("saveTransaction", function() {
 			organizeInputRef: organizeInput
 		};
 
-		const actualValue = saveData([], userArg, dataProvided);
+		const actualValue = saveData([], userArg, config);
 		const expectedValue = `Employee ID, Beverage, Quantity, Date \n1,orange,1,${time.toJSON()}`;
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
@@ -277,7 +277,7 @@ describe("saveTransaction", function() {
 describe("performOperation", function() {
 	it("should  save the data of given employee", function() {
 		const timeForTEst = "22";
-		const saveData = function(allTransaction, userArg, dataProvided) {
+		const saveData = function(allTransaction, userArg, config) {
 			assert.deepStrictEqual(allTransaction, []);
 			assert.deepStrictEqual(userArg, [
 				"--save",
@@ -288,7 +288,7 @@ describe("performOperation", function() {
 				"quantity",
 				"1"
 			]);
-			assert.deepStrictEqual(dataProvided, {
+			assert.deepStrictEqual(config, {
 				time: timeForTEst,
 				readTransactionsRef: readTransactions,
 				findOperationsRef: findOperation
@@ -299,11 +299,11 @@ describe("performOperation", function() {
 			assert.strictEqual(operationName, "--save");
 			return saveData;
 		};
-		const readTransactions = function(dataProvided) {
+		const readTransactions = function(config) {
 			return [];
 		};
 
-		const dataProvided = {
+		const config = {
 			time: timeForTEst,
 			readTransactionsRef: readTransactions,
 			findOperationsRef: findOperation
@@ -317,7 +317,7 @@ describe("performOperation", function() {
 			"quantity",
 			"1"
 		];
-		const actualValue = performOperation(userArg, dataProvided);
+		const actualValue = performOperation(userArg, config);
 		const expectedValue = "";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});

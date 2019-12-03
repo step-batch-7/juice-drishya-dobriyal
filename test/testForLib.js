@@ -60,14 +60,14 @@ describe("readTransaction", function() {
 		const writer = function() {
 			return;
 		};
-		const dataProvided = {
+		const config = {
 			filePath: "correctPath",
 			encoder: "utf8",
 			reader: reader,
 			doesfileExist: doesfileExist,
 			writer: writer
 		};
-		assert.deepStrictEqual(readTransaction(dataProvided), []);
+		assert.deepStrictEqual(readTransaction(config), []);
 	});
 	it("when path exist,it should return content of file  ", function() {
 		const doesfileExist = function(path) {
@@ -81,14 +81,14 @@ describe("readTransaction", function() {
 		const writer = function() {
 			return;
 		};
-		const dataProvided = {
+		const config = {
 			filePath: "correctPath",
 			encoder: "utf8",
 			reader: reader,
 			doesfileExist: doesfileExist,
 			writer: writer
 		};
-		assert.deepStrictEqual(readTransaction(dataProvided), {
+		assert.deepStrictEqual(readTransaction(config), {
 			checked: "reader"
 		});
 	});
@@ -102,11 +102,11 @@ describe("writeTransaction", function() {
 			assert.strictEqual(encoder, "utf8");
 			return '{"a":1}';
 		};
-		const dataProvided = {
+		const config = {
 			filePath: "filePath",
 			encoder: "utf8",
 			writer
 		};
-		assert.strictEqual(writeTransaction([], dataProvided), '{"a":1}');
+		assert.strictEqual(writeTransaction([], config), '{"a":1}');
 	});
 });

@@ -2,13 +2,10 @@ const lib = require("./lib.js");
 const employeeFinder = lib.employeeFinder;
 const objectValuesToStrings = lib.objectValuesToStrings;
 
-const saveData = function(allTransaction, userArg, dataProvided) {
-	const newTransaction = dataProvided.organizeInputRef(
-		userArg,
-		dataProvided.time
-	);
+const saveData = function(allTransaction, userArg, config) {
+	const newTransaction = config.organizeInputRef(userArg, config.time);
 	allTransaction.push(newTransaction);
-	dataProvided.writeTransactionsRef(allTransaction, dataProvided);
+	config.writeTransactionsRef(allTransaction, config);
 	const stringedOutput = `Employee ID, Beverage, Quantity, Date \n${objectValuesToStrings(
 		newTransaction
 	)}`;
@@ -45,10 +42,10 @@ const findOperation = function(operation) {
 	return listOfOperation[operation];
 };
 
-const performOperation = function(userArgs, dataProvided) {
-	const allTransaction = dataProvided.readTransactionsRef(dataProvided);
-	const operation = dataProvided.findOperationsRef(userArgs[0]);
-	const resultedOperation = operation(allTransaction, userArgs, dataProvided);
+const performOperation = function(userArgs, config) {
+	const allTransaction = config.readTransactionsRef(config);
+	const operation = config.findOperationsRef(userArgs[0]);
+	const resultedOperation = operation(allTransaction, userArgs, config);
 	return resultedOperation;
 };
 

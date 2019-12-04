@@ -37,10 +37,14 @@ const query = function(allTransaction, userArgs) {
 	return stringedOutput;
 };
 
+const invalidInput = function() {
+	return "wrong input";
+};
+
 const findOperation = function(operation) {
 	const listOfOperation = { "--save": saveData, "--query": query };
 	if (!listOfOperation.hasOwnProperty(operation)) {
-		listOfOperation[operation] = () => "wrong Input";
+		listOfOperation[operation] = invalidInput;
 	}
 	return listOfOperation[operation];
 };

@@ -302,7 +302,6 @@ describe("performOperation", function() {
 		const readTransactions = function(config) {
 			return [];
 		};
-
 		const config = {
 			time: timeForTEst,
 			readTransactionsRef: readTransactions,
@@ -321,6 +320,35 @@ describe("performOperation", function() {
 		const expectedValue = "";
 		assert.deepStrictEqual(actualValue, expectedValue);
 	});
+	it("should give  query of specified emploiyee, beverage, date", function() {
+		const userArg = ["--query", "--beverage", "orange"];
+		const timeForTEst = new Date();
+		const readTransactions = function(config) {
+			return [
+				{
+					empId: "1",
+					beverage: "orange",
+					quantity: "1",
+					date: "2019-11-24T03:27:09.382Z"
+				},
+				{
+					empId: "11",
+					beverage: "orange",
+					quantity: "1",
+					date: "2019-11-24T03:27:09.382Z"
+				}
+			];
+		};
+
+		const config = {
+			time: timeForTEst,
+			readTransactionsRef: readTransactions,
+			findOperationsRef: findOperation
+		};
+		actualValue = performOperation(userArg, config);
+		expectedValue = `Employee ID, Beverage, Quantity, Date \n1,orange,1,2019-11-24T03:27:09.382Z\n11,orange,1,2019-11-24T03:27:09.382Z\nTotal: 2 Juices`;
+		assert.deepStrictEqual(actualValue, expectedValue);
+	});
 });
 
 describe("FindOperation", function() {
@@ -329,5 +357,11 @@ describe("FindOperation", function() {
 	});
 	it("should return the query operation reference address", function() {
 		assert.strictEqual(findOperation("--query"), query);
+	});
+	it("should give invalid reference address when --save or --query is not present as user first aruments", function() {
+		const invalidInput = function() {
+			return "wrong input";
+		};
+		assert.deepStrictEqual(findOperation("--operation")(), invalidInput());
 	});
 });
